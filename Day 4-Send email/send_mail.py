@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 from decouple import config
 
 username = config('username')
-passsword = config('password')
+password = config('password')
 
 
 def send_mail(text='email body', subject='hello world',
@@ -42,7 +42,7 @@ def send_mail(text='email body', subject='hello world',
         server = smtplib.SMTP(host='smtp.gmail.com', port=587)
         server.ehlo()
         server.starttls(context=ssl.create_default_context())
-        server.login(username, passsword)
+        server.login(username, password)
         server.sendmail(from_to, send_to, message.as_string())
     except Exception as e:
         print(e)
