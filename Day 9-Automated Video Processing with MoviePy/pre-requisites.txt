@@ -1,0 +1,1 @@
+to install MoviePy we first need to install imagemagick and ffmpeg.
