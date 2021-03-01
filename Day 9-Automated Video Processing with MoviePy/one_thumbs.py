@@ -12,11 +12,14 @@ thumbnail_per_frame_dir = os.path.join(SAMPLE_OUTPUTS, 'thumbnails_per_frame')
 thumbnail_per_desired_frames_dir = os.path.join(SAMPLE_OUTPUTS,
                                                 'thumbnails_per_desired_frames'
                                                 )
+thumbnail_per_half_sec_dir = os.path.join(SAMPLE_OUTPUTS,
+                                          'thumbnails_per_half_sec')
 
 
 os.makedirs(thumbnail_dir, exist_ok=True)
 os.makedirs(thumbnail_per_frame_dir, exist_ok=True)
 os.makedirs(thumbnail_per_desired_frames_dir, exist_ok=True)
+os.makedirs(thumbnail_per_half_sec_dir, exist_ok=True)
 
 
 clip = VideoFileClip(source_path)
@@ -34,6 +37,7 @@ duration = int(clip.duration)  # or clip.reader.duration
 
 
 # thumbnail for frame per second
+# least efficient method
 for i in range(duration):
     frame = clip.get_frame(i)
     # print(frame, '\n') numpy array of pixels at particular second of clip
@@ -55,9 +59,24 @@ for i, per_frame in enumerate(clip.iter_frames()):
 # you can do any number of frame
 for i, desired_frame in enumerate(clip.iter_frames()):
     if i % 60 == 0:
-        current_ms = (i / 60) * 1000
+        current_ms = int((i / 60) * 1000)
         PATH = os.path.join(thumbnail_per_desired_frames_dir,
                             f"{current_ms}.jpg")
         img_per_desired_frames_path = PATH
         img_per_desired_frames = Image.fromarray(desired_frame)
         img_per_desired_frames.save(img_per_desired_frames_path)
+
+
+# thumbnail per half second
+# fphs = frames per half second
+for i, half_sec_frame in enumerate(clip.iter_frames()):
+    fphs = int(fps / 2)
+    if i % fphs == 0:
+        current_ms = int((i / fphs) * 1000)
+        # opted ms instead of sec to prevent '.' coming before '.jpg'
+
+        PATH = os.path.join(thumbnail_per_half_sec_dir,
+                            f"{current_ms}.jpg")
+        img_per_half_sec_frames_path = PATH
+        img_per_half_sec_frames = Image.fromarray(half_sec_frame)
+        img_per_half_sec_frames.save(img_per_half_sec_frames_path)
