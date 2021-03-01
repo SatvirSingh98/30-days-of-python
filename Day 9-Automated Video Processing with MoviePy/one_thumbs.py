@@ -9,10 +9,14 @@ from conf import SAMPLE_INPUTS, SAMPLE_OUTPUTS
 source_path = os.path.join(SAMPLE_INPUTS, 'sample.mp4')
 thumbnail_dir = os.path.join(SAMPLE_OUTPUTS, 'thumbnails')
 thumbnail_per_frame_dir = os.path.join(SAMPLE_OUTPUTS, 'thumbnails_per_frame')
+thumbnail_per_desired_frames_dir = os.path.join(SAMPLE_OUTPUTS,
+                                                'thumbnails_per_desired_frames'
+                                                )
 
 
 os.makedirs(thumbnail_dir, exist_ok=True)
 os.makedirs(thumbnail_per_frame_dir, exist_ok=True)
+os.makedirs(thumbnail_per_desired_frames_dir, exist_ok=True)
 
 
 clip = VideoFileClip(source_path)
@@ -44,3 +48,16 @@ for i, per_frame in enumerate(clip.iter_frames()):
     img_per_frame_path = os.path.join(thumbnail_per_frame_dir, f"{i}.jpg")
     img_per_frame = Image.fromarray(per_frame)
     img_per_frame.save(img_per_frame_path)
+
+
+# thumbnail for desired no. of frames
+# eg. we will use iter_frame() for 60fps
+# you can do any number of frame
+for i, desired_frame in enumerate(clip.iter_frames()):
+    if i % 60 == 0:
+        current_ms = (i / 60) * 1000
+        PATH = os.path.join(thumbnail_per_desired_frames_dir,
+                            f"{current_ms}.jpg")
+        img_per_desired_frames_path = PATH
+        img_per_desired_frames = Image.fromarray(desired_frame)
+        img_per_desired_frames.save(img_per_desired_frames_path)
