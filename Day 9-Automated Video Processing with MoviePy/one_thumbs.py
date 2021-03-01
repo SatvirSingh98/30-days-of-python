@@ -8,8 +8,11 @@ from conf import SAMPLE_INPUTS, SAMPLE_OUTPUTS
 
 source_path = os.path.join(SAMPLE_INPUTS, 'sample.mp4')
 thumbnail_dir = os.path.join(SAMPLE_OUTPUTS, 'thumbnails')
+thumbnail_per_frame_dir = os.path.join(SAMPLE_OUTPUTS, 'thumbnails_per_frame')
+
 
 os.makedirs(thumbnail_dir, exist_ok=True)
+os.makedirs(thumbnail_per_frame_dir, exist_ok=True)
 
 
 clip = VideoFileClip(source_path)
@@ -34,3 +37,10 @@ for i in range(duration):
     # print(f'frame at {i+1} seconds at {new_img_path}')
     img = Image.fromarray(frame)
     img.save(img_path)
+
+
+# thumbnail for each frame
+for i, per_frame in enumerate(clip.iter_frames()):
+    img_per_frame_path = os.path.join(thumbnail_per_frame_dir, f"{i}.jpg")
+    img_per_frame = Image.fromarray(per_frame)
+    img_per_frame.save(img_per_frame_path)
