@@ -1,6 +1,6 @@
 import os
 
-from moviepy.editor import ImageSequenceClip
+from moviepy.editor import ImageSequenceClip, ImageClip
 # from PIL import Image
 
 from conf import SAMPLE_OUTPUTS
@@ -15,7 +15,8 @@ thumbnail_per_half_sec_dir = os.path.join(SAMPLE_OUTPUTS,
                                           'thumbnails_per_half_sec')
 
 
-output_video = os.path.join(SAMPLE_OUTPUTS, 'thumbnail.mp4')
+output_video1 = os.path.join(SAMPLE_OUTPUTS, 'thumbnail_1.mp4')
+output_video2 = os.path.join(SAMPLE_OUTPUTS, 'thumbnail_2.mp4')
 
 
 # directly it will give defected video because filepaths are not in order.
@@ -36,7 +37,7 @@ output_video = os.path.join(SAMPLE_OUTPUTS, 'thumbnail.mp4')
 directory = {}
 
 # can do for other collections of imgs.
-for root, dirs, files in os.walk(thumbnail_dir):
+for root, dirs, files in os.walk(thumbnail_per_frame_dir):
     for fname in files:
         if fname.endswith(".jpg"):
             filepath = os.path.join(root, fname)
@@ -54,5 +55,16 @@ for k in sorted(directory.keys()):
     new_filepath = directory[k]
     new_paths.append(new_filepath)
 
-clip = ImageSequenceClip(new_paths, fps=1)
-clip.write_videofile(output_video)  # without audio
+clip1 = ImageSequenceClip(new_paths, fps=30)
+clip1.write_videofile(output_video1)  # without audio
+
+
+# can also convert each filepath into its own frame
+my_clips = []
+for path in new_paths:
+    frame = ImageClip(path)
+    # print(frame.img) numpy array
+    my_clips.append(frame.img)
+
+clip2 = ImageSequenceClip(my_clips, fps=30)
+clip2.write_videofile(output_video2)  # without audio
