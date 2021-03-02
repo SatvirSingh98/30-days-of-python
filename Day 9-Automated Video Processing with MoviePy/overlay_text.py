@@ -31,6 +31,9 @@ intro_text = intro_text.set_fps(video_clip.fps)
 intro_text = intro_text.set_duration(intro_duration)
 intro_text = intro_text.set_pos('center')
 
+intro_music = background_audio_clip.subclip(t_start=0, t_end=intro_duration)
+intro_text = intro_text.set_audio(intro_music)
+
 intro_video_dir = os.path.join(overlay_text_dir, 'intro-video.mp4')
 intro_text.write_videofile(intro_video_dir)
 
