@@ -7,8 +7,10 @@ from moviepy.editor import (VideoFileClip, AudioFileClip, CompositeVideoClip,
 source_video_path = os.path.join(SAMPLE_INPUTS, 'sample.mp4')
 source_audio_path = os.path.join(SAMPLE_INPUTS, 'audio.mp3')
 overlay_text_dir = os.path.join(SAMPLE_OUTPUTS, 'overlay_text')
+# mixed_audio_dir = os.path.join(SAMPLE_OUTPUTS, 'mixed_audio')
 
 os.makedirs(overlay_text_dir, exist_ok=True)
+# og_audio_path = os.path.join(mix_audio_dir, 'og.mp3')
 
 final_audio_dir = os.path.join(overlay_text_dir, 'overlay-audio.mp3')
 final_video_dir = os.path.join(overlay_text_dir, 'overlay-video.mp4')
@@ -59,6 +61,10 @@ cvc = cvc.set_fps(video_clip.fps)
 # overlay_clip = CompositeVideoClip([video_clip, cvc], size=video_clip.size)
 # overlay_clip = overlay_clip.set_duration(video_clip.duration)
 # overlay_clip = overlay_clip.set_fps(video_clip.fps)
+
+# og_audio = AudioFileClip(og_audio_path)
+# overlay_clip = overlay_clip.set_audio(og_audio)
+
 # final_clip = concatenate_videoclips([intro_text, overlay_clip])
 
 final_clip = concatenate_videoclips([intro_text, cvc])
