@@ -92,19 +92,20 @@ def run(start_year: int = None, years_ago: int = None):
             print(f'Finished parsing {start_year}')
     else:
         print('The Requested Page Not Found...( INVALID YEAR )')
-        print(('data is available from 1977 to {}.'.upper()).format(current_year))
+        print(('data is available from 1977 to {}.'.upper())
+              .format(current_year))
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-            try:
-                start = int(sys.argv[1])
-            except:
-                start = None
-            try:
-                count = int(sys.argv[2])
-            except:
-                count = None
-            run(start_year=start, years_ago=count)
+        try:
+            start = int(sys.argv[1])
+        except Exception:
+            start = None
+        try:
+            count = int(sys.argv[2])
+        except Exception:
+            count = None
+        run(start_year=start, years_ago=count)
     else:
         run()
