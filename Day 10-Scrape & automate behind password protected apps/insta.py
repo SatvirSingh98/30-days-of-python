@@ -10,75 +10,38 @@ from conf import GECKODRIVER_PATH
 
 
 browser = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
-# url = 'https://www.instagram.com'
-# browser.get(url)
+url = 'https://www.instagram.com'
+browser.get(url)
+print(browser.current_url)
 
+sleep(1)
+username = browser.find_element_by_name("username")
+username.send_keys(config('INSTA_USERNAME'))
 
-def insta_login(browser):
-    sleep(0.4)
-    username = browser.find_element_by_name("username")
-    username.send_keys(config('INSTA_USERNAME'))
+username = browser.find_element_by_name("password")
+username.send_keys(config('INSTA_PASSWORD'))
 
-    username = browser.find_element_by_name("password")
-    username.send_keys(config('INSTA_PASSWORD'))
+print('Logging in ...')
 
-    print('Logging in ...')
+sleep(1)
+login = browser.find_element_by_css_selector("button[type='submit']")
+login.click()
 
-    sleep(0.4)
-    login = browser.find_element_by_css_selector("button[type='submit']")
-    login.click()
-
-    sleep(3.1)
-    # not_now_element1 = browser.find_element_by_class_name("cmbtv")
-    # not_now_button1 = not_now_element1.find_element_by_tag_name('button')
-    # not_now_button1.click()
-    # or
-
-    print('Logged in ...')
-
-    try:
-        not_now_xpath1 = "//button[contains(text(), 'Not Now')]"
-        not_now_btn1 = browser.find_element_by_xpath(not_now_xpath1)
-        not_now_btn1.click()
-    except Exception:
-        pass
-
-    sleep(1)
-    # not_now_element2 = browser.find_element_by_class_name("mt3GC")
-    # not_now_button2 = not_now_element2.find_element_by_css_selector(
-    #     "button[class='aOOlW   HoLwm ']")
-    # not_now_button2.click()
-    try:
-        not_now_xpath2 = "//button[contains(text(), 'Not Now')]"
-        not_now_btn2 = browser.find_element_by_xpath(not_now_xpath2)
-        not_now_btn2.click()
-    except Exception:
-        pass
-
-
-# if we want to click everything having text 'not now':
-# xpath = "//*[contains(text(), 'Not Now')]"
-
-body_element = browser.find_element_by_css_selector('body')
-html_txt = body_element.get_attribute('innerHTML')
-# print(html_txt)
+sleep(3.1)
+print('Logged in ...')
 
 
 def automate_follow(browser, follow_user: str):
     # it will click the first follow btn of page
+    sleep(2)
     follow_btn_xpath = ("//button[contains(text(), 'Follow')]")
-    # "[not(contains(text(), 'Following')]")
     follow_btn = browser.find_element_by_xpath(follow_btn_xpath)
+    print(follow_btn)
+
     sleep(2)
     try:
         follow_btn.click()
-        insta_login(browser)
-        follow_btn = browser.find_element_by_xpath(follow_btn_xpath)
-        sleep(2)
-        follow_btn.click()
-
         print(f'Following: {follow_user}')
-
     except Exception:
         print(f'Already following: {follow_user}')
 
@@ -98,10 +61,9 @@ def automate_follow(browser, follow_user: str):
 user = 'therock'
 new_user_url = f"https://www.instagram.com/{user}/"
 browser.get(new_user_url)
-automate_follow(browser, follow_user=user)
+# automate_follow(browser, follow_user=user)
 
 
-# post_url_pattern = "https://www.instagram.com/ted/p/<post_slug_id>"
 post_xpath_str = "//a[contains(@href, '/p/')]"
 post_links = browser.find_elements_by_xpath(post_xpath_str)
 
@@ -165,3 +127,22 @@ def scrape_and_save(elements, directory):
 
 # scrape_and_save(elements=img_elements, directory=IMG_DIR)
 # scrape_and_save(elements=video_elements, directory=VIDEO_DIR)
+
+
+def automate_comment(browser, content="That is cool!"):
+    sleep(10)
+    comment_xpath = "//textarea[contains(@placeholder, 'Add a comment…')]"
+    comment_element = browser.find_element_by_xpath(comment_xpath)
+    comment_element.send_keys(content)
+    print('commenting on the post ...')
+    post_btn_path = "button[type='submit']"
+    post_btn_elements = browser.find_elements_by_css_selector(post_btn_path)
+    sleep(2)
+    for btn in post_btn_elements:
+        try:
+            btn.click()
+        except Exception:
+            pass
+
+
+# automate_comment(browser=browser)
