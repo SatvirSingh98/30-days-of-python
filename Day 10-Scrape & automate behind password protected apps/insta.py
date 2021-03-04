@@ -146,3 +146,29 @@ def automate_comment(browser, content="That is cool!"):
 
 
 # automate_comment(browser=browser)
+
+
+def automate_likes(browser):
+    like_heart_svg_xpath = "//*[contains(@aria-label, 'Like')]"
+    all_like_hearts_elements = browser.find_elements_by_xpath(
+        like_heart_svg_xpath)
+    max_heart_h = -1
+    for heart_el in all_like_hearts_elements:
+        h = heart_el.get_attribute("height")
+        current_h = int(h)
+        if current_h > max_heart_h:
+            max_heart_h = current_h
+    all_like_hearts_elements = browser.find_elements_by_xpath(
+        like_heart_svg_xpath)
+    for heart_el in all_like_hearts_elements:
+        h = heart_el.get_attribute("height")
+        if h == max_heart_h or h == f"{max_heart_h}":
+            parent_button = heart_el.find_element_by_xpath('..')
+            sleep(2)
+            try:
+                parent_button.click()
+            except Exception:
+                pass
+
+
+# automate_likes(browser=browser)
