@@ -1,3 +1,5 @@
+import os
+import requests
 from decouple import config
 from selenium import webdriver
 from time import sleep
@@ -82,6 +84,52 @@ def automate_follow(browser):
     #         pass
 
 
-new_user_url = "https://www.instagram.com/ted/"
+new_user_url = "https://www.instagram.com/therock/"
 browser.get(new_user_url)
 automate_follow(browser)
+
+
+# post_url_pattern = "https://www.instagram.com/ted/p/<post_slug_id>"
+post_xpath_str = "//a[contains(@href, '/p/')]"
+post_links = browser.find_elements_by_xpath(post_xpath_str)
+
+post_link_element = None
+if len(post_links) > 0:
+    post_link_element = post_links[0]
+
+if post_link_element is not None:
+    post_href = post_link_element.get_attribute('href')
+    browser.get(post_href)
+
+# scrapping video and image elements of top element
+# video_element = browser.find_element_by_xpath("//video")
+# img_element = browser.find_element_by_xpath("//img")
+
+
+# scrapping all the videos and images elements
+video_elements = browser.find_elements_by_xpath("//video")
+img_elements = browser.find_elements_by_xpath("//img")
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+IMG_DIR = os.path.join(DATA_DIR, 'images')
+
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(IMG_DIR, exist_ok=True)
+
+for img in img_elements:
+    url = img.get_attribute('src')
+    filename = os.path.basename(url)
+    filepath = os.path.join(IMG_DIR, f'{filename}.jpg')
+
+    with requests.get(url, stream=True) as r:
+        try:
+            r.raise_for_status()
+        except Exception:
+            continue
+
+        with open(filepath, 'wb') as f:
+            for chunk in r.iter_content():
+                if chunk:
+                    f.write(chunk)
