@@ -4,3 +4,5 @@ Type: 'jupyter notebook' and press enter.
 colab.research.google.com -->
 It is a very good replacement for python shell.
 Now click new and make python file and work.
+
+install fastapi and uvicorn for data as an api
