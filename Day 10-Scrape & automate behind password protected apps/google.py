@@ -1,9 +1,9 @@
 from selenium import webdriver
 from time import sleep
-from conf import GECKODRIVER_PATH
+from conf import CHROMEDRIVER_PATH
 
 
-browser = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH)
 url = 'https://google.com'
 browser.get(url)
 

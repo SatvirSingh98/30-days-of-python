@@ -6,10 +6,10 @@ import requests
 from decouple import config
 from selenium import webdriver
 
-from conf import GECKODRIVER_PATH
+from conf import CHROMEDRIVER_PATH
 
 
-browser = webdriver.Firefox(executable_path=GECKODRIVER_PATH)
+browser = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH)
 url = 'https://www.instagram.com'
 browser.get(url)
 print(browser.current_url)
