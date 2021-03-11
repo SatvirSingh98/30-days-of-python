@@ -9,6 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE_DIR = os.path.join(BASE_DIR, 'cache')
 dataset = os.path.join(CACHE_DIR, 'movies-box-office-dataset-cleaned.csv')
 
+
 @app.get('/')
 def read_root():
     return {"Hello": "World"}
