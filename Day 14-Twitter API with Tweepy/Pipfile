@@ -7,6 +7,7 @@ name = "pypi"
 jupyter = "*"
 tweepy = "*"
 python-decouple = "*"
+pandas = "*"
 
 [dev-packages]
 
