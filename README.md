@@ -1,0 +1,3 @@
+# A-little-taste-of-python
+## In this I have practised python by doing some of the basics but really cool stuff....
+### I am very excited to start my programming journey.
